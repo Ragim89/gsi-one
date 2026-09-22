@@ -1,0 +1,803 @@
+openapi: 3.1.0
+info:
+  title: GSI ONE Commercial API — Block 03
+  version: 1.0.0
+  description: Counterparties, contacts, preferences, services, contracts, pricing and quotes.
+servers:
+- url: /api/v1
+paths:
+  /counterparties:
+    get:
+      tags:
+      - Counterparties
+      operationId: listCounterparties
+      responses:
+        '200':
+          description: Authorized counterparties
+    post:
+      tags:
+      - Counterparties
+      operationId: createCounterparty
+      responses:
+        '201':
+          description: Counterparty created
+  /counterparties/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Counterparties
+      operationId: getCounterparty
+      responses:
+        '200':
+          description: Counterparty
+        '404':
+          description: Not found or not visible
+    patch:
+      tags:
+      - Counterparties
+      operationId: updateCounterparty
+      responses:
+        '200':
+          description: Updated
+        '409':
+          description: Optimistic concurrency conflict
+  /counterparties/{id}/deactivate:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      tags:
+      - Counterparties
+      operationId: deactivateCounterparty
+      responses:
+        '200':
+          description: Deactivated
+  /counterparties/{id}/duplicate-check:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Counterparties
+      operationId: duplicateCheckCounterparty
+      responses:
+        '200':
+          description: Duplicate candidates/warnings
+  /counterparties/{id}/types:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Counterparties
+      operationId: getCounterpartyTypes
+      responses:
+        '200':
+          description: Types
+    put:
+      tags:
+      - Counterparties
+      operationId: replaceCounterpartyTypes
+      responses:
+        '200':
+          description: Types updated
+  /counterparties/{id}/identifiers:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Counterparties
+      operationId: listCounterpartyIdentifiers
+      responses:
+        '200':
+          description: Identifiers
+    post:
+      tags:
+      - Counterparties
+      operationId: addCounterpartyIdentifier
+      responses:
+        '201':
+          description: Identifier added
+        '409':
+          description: Unique identifier conflict
+  /counterparties/{id}/scopes:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Counterparties
+      operationId: listCounterpartyScopes
+      responses:
+        '200':
+          description: Visibility scopes
+    post:
+      tags:
+      - Counterparties
+      operationId: addCounterpartyScope
+      responses:
+        '201':
+          description: Scope added
+        '403':
+          description: Unauthorized share
+  /counterparties/{id}/contacts:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Contacts
+      operationId: listCounterpartyContacts
+      responses:
+        '200':
+          description: Contacts
+    post:
+      tags:
+      - Contacts
+      operationId: createCounterpartyContact
+      responses:
+        '201':
+          description: Contact created
+  /contacts/{contactId}:
+    parameters:
+    - name: contactId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    patch:
+      tags:
+      - Contacts
+      operationId: updateContact
+      responses:
+        '200':
+          description: Updated
+  /counterparties/{id}/addresses:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Counterparties
+      operationId: listCounterpartyAddresses
+      responses:
+        '200':
+          description: Addresses
+    post:
+      tags:
+      - Counterparties
+      operationId: createCounterpartyAddress
+      responses:
+        '201':
+          description: Address created
+  /counterparties/{id}/entity-profiles:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Counterparties
+      operationId: listCounterpartyEntityProfiles
+      responses:
+        '200':
+          description: Entity profiles
+  /counterparties/{id}/entity-profiles/{legalEntityId}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    - $ref: '#/components/parameters/LegalEntityId'
+    put:
+      tags:
+      - Counterparties
+      operationId: putCounterpartyEntityProfile
+      responses:
+        '200':
+          description: Profile upserted
+  /counterparties/{id}/document-preferences:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Client Preferences
+      operationId: listDocumentPreferences
+      responses:
+        '200':
+          description: Preferences
+  /counterparties/{id}/document-preferences/{documentType}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    - name: documentType
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      tags:
+      - Client Preferences
+      operationId: putDocumentPreference
+      responses:
+        '200':
+          description: Preference upserted
+  /counterparties/{id}/billing-profiles:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Client Preferences
+      operationId: listBillingProfiles
+      responses:
+        '200':
+          description: Billing profiles
+  /counterparties/{id}/billing-profiles/{legalEntityId}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    - $ref: '#/components/parameters/LegalEntityId'
+    put:
+      tags:
+      - Client Preferences
+      operationId: putBillingProfile
+      responses:
+        '200':
+          description: Billing profile upserted
+  /crm/activities:
+    get:
+      tags:
+      - CRM Activities
+      operationId: listCrmActivities
+      responses:
+        '200':
+          description: Activities
+    post:
+      tags:
+      - CRM Activities
+      operationId: createCrmActivity
+      responses:
+        '201':
+          description: Activity created
+  /services:
+    get:
+      tags:
+      - Services
+      operationId: listServices
+      responses:
+        '200':
+          description: Services
+    post:
+      tags:
+      - Services
+      operationId: createService
+      responses:
+        '201':
+          description: Service created
+  /services/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Services
+      operationId: getService
+      responses:
+        '200':
+          description: Service
+    patch:
+      tags:
+      - Services
+      operationId: updateService
+      responses:
+        '200':
+          description: Updated
+  /services/{id}/localizations:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Services
+      operationId: listServiceLocalizations
+      responses:
+        '200':
+          description: Localizations
+  /services/{id}/availability:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Services
+      operationId: listServiceAvailability
+      responses:
+        '200':
+          description: Availability
+    put:
+      tags:
+      - Services
+      operationId: replaceServiceAvailability
+      responses:
+        '200':
+          description: Availability updated
+  /contracts:
+    get:
+      tags:
+      - Contracts
+      operationId: listContracts
+      responses:
+        '200':
+          description: Contracts
+    post:
+      tags:
+      - Contracts
+      operationId: createContract
+      responses:
+        '201':
+          description: Contract created
+  /contracts/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Contracts
+      operationId: getContract
+      responses:
+        '200':
+          description: Contract
+    patch:
+      tags:
+      - Contracts
+      operationId: updateContract
+      responses:
+        '200':
+          description: Contract updated
+  /contracts/{id}/versions:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Contracts
+      operationId: listContractVersions
+      responses:
+        '200':
+          description: Versions
+    post:
+      tags:
+      - Contracts
+      operationId: createContractVersion
+      responses:
+        '201':
+          description: Version created
+  /contracts/{id}/versions/{versionId}/submit:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    - $ref: '#/components/parameters/VersionId'
+    post:
+      tags:
+      - Contracts
+      operationId: submitContractVersion
+      responses:
+        '200':
+          description: Submitted
+  /contracts/{id}/versions/{versionId}/approve:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    - $ref: '#/components/parameters/VersionId'
+    post:
+      tags:
+      - Contracts
+      operationId: approveContractVersion
+      responses:
+        '200':
+          description: Approved
+  /contracts/{id}/versions/{versionId}/activate:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    - $ref: '#/components/parameters/VersionId'
+    post:
+      tags:
+      - Contracts
+      operationId: activateContractVersion
+      responses:
+        '200':
+          description: Activated
+  /price-books:
+    get:
+      tags:
+      - Pricing
+      operationId: listPriceBooks
+      responses:
+        '200':
+          description: Price books
+    post:
+      tags:
+      - Pricing
+      operationId: createPriceBook
+      responses:
+        '201':
+          description: Price book created
+  /price-books/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Pricing
+      operationId: getPriceBook
+      responses:
+        '200':
+          description: Price book
+    patch:
+      tags:
+      - Pricing
+      operationId: updatePriceBook
+      responses:
+        '200':
+          description: Price book updated
+  /price-books/{id}/items:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      tags:
+      - Pricing
+      operationId: addPriceBookItem
+      responses:
+        '201':
+          description: Item created
+  /pricing/resolve:
+    post:
+      tags:
+      - Pricing
+      operationId: resolvePrice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceResolveRequest'
+      responses:
+        '200':
+          description: Deterministic price with provenance
+        '409':
+          description: AMBIGUOUS_PRICE
+        '422':
+          description: NO_PRICE or validation error
+  /quotes:
+    get:
+      tags:
+      - Quotes
+      operationId: listQuotes
+      responses:
+        '200':
+          description: Quotes
+    post:
+      tags:
+      - Quotes
+      operationId: createQuote
+      responses:
+        '201':
+          description: Quote created
+  /quotes/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      tags:
+      - Quotes
+      operationId: getQuote
+      responses:
+        '200':
+          description: Quote
+    patch:
+      tags:
+      - Quotes
+      operationId: updateQuote
+      responses:
+        '200':
+          description: Quote updated
+  /quotes/{id}/items:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      tags:
+      - Quotes
+      operationId: addQuoteItem
+      responses:
+        '201':
+          description: Item added
+  /quotes/{id}/recalculate:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      tags:
+      - Quotes
+      operationId: recalculateQuote
+      responses:
+        '200':
+          description: Server-calculated totals
+  /quotes/{id}/submit:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      tags:
+      - Quotes
+      operationId: submitQuote
+      responses:
+        '200':
+          description: Submitted for approval
+  /quotes/{id}/approve:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      tags:
+      - Quotes
+      operationId: approveQuote
+      responses:
+        '200':
+          description: Approved
+  /quotes/{id}/send:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      tags:
+      - Quotes
+      operationId: markQuoteSent
+      responses:
+        '200':
+          description: Marked sent; outbound delivery adapter may be deferred
+  /quotes/{id}/accept:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      tags:
+      - Quotes
+      operationId: acceptQuote
+      responses:
+        '200':
+          description: Accepted
+  /quotes/{id}/reject:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      tags:
+      - Quotes
+      operationId: rejectQuote
+      responses:
+        '200':
+          description: Rejected
+  /quotes/{id}/revisions:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      tags:
+      - Quotes
+      operationId: createQuoteRevision
+      responses:
+        '201':
+          description: Revision created
+  /counterparties/{id}/identifiers/{identifierId}:
+    parameters:
+    - &id001
+      $ref: '#/components/parameters/Id'
+    - name: identifierId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    patch:
+      tags:
+      - Counterparties
+      operationId: updateCounterpartyIdentifier
+      responses:
+        '200':
+          description: Identifier updated
+  /counterparties/{id}/scopes/{scopeId}:
+    parameters:
+    - *id001
+    - name: scopeId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    delete:
+      tags:
+      - Counterparties
+      operationId: removeCounterpartyScope
+      responses:
+        '204':
+          description: Scope removed
+        '403':
+          description: Unauthorized share change
+  /addresses/{addressId}:
+    parameters:
+    - name: addressId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    patch:
+      tags:
+      - Counterparties
+      operationId: updateCounterpartyAddress
+      responses:
+        '200':
+          description: Address updated
+  /crm/activities/{id}:
+    parameters:
+    - *id001
+    patch:
+      tags:
+      - CRM Activities
+      operationId: updateCrmActivity
+      responses:
+        '200':
+          description: Activity updated
+  /services/{id}/localizations/{languageCode}:
+    parameters:
+    - *id001
+    - name: languageCode
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      tags:
+      - Services
+      operationId: putServiceLocalization
+      responses:
+        '200':
+          description: Localization upserted
+  /contracts/{id}/versions/{versionId}:
+    parameters:
+    - *id001
+    - $ref: '#/components/parameters/VersionId'
+    get:
+      tags:
+      - Contracts
+      operationId: getContractVersion
+      responses:
+        '200':
+          description: Contract version
+    patch:
+      tags:
+      - Contracts
+      operationId: updateContractVersion
+      responses:
+        '200':
+          description: Draft version updated
+        '409':
+          description: Immutable state or concurrency conflict
+  /contracts/{id}/suspend:
+    parameters:
+    - *id001
+    post:
+      tags:
+      - Contracts
+      operationId: suspendContract
+      responses:
+        '200':
+          description: Contract suspended
+  /contracts/{id}/terminate:
+    parameters:
+    - *id001
+    post:
+      tags:
+      - Contracts
+      operationId: terminateContract
+      responses:
+        '200':
+          description: Contract terminated
+  /price-books/{id}/items/{itemId}:
+    parameters:
+    - *id001
+    - name: itemId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    patch:
+      tags:
+      - Pricing
+      operationId: updatePriceBookItem
+      responses:
+        '200':
+          description: Price item updated
+  /price-books/{id}/activate:
+    parameters:
+    - *id001
+    post:
+      tags:
+      - Pricing
+      operationId: activatePriceBook
+      responses:
+        '200':
+          description: Price book activated
+        '409':
+          description: Conflicting/ambiguous rules
+  /price-books/{id}/retire:
+    parameters:
+    - *id001
+    post:
+      tags:
+      - Pricing
+      operationId: retirePriceBook
+      responses:
+        '200':
+          description: Price book retired
+  /quotes/{id}/items/{itemId}:
+    parameters:
+    - *id001
+    - name: itemId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    patch:
+      tags:
+      - Quotes
+      operationId: updateQuoteItem
+      responses:
+        '200':
+          description: Quote item updated
+    delete:
+      tags:
+      - Quotes
+      operationId: deleteQuoteItem
+      responses:
+        '204':
+          description: Quote item removed
+components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    LegalEntityId:
+      name: legalEntityId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    VersionId:
+      name: versionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    PriceResolveRequest:
+      type: object
+      required:
+      - pricingDate
+      - legalEntityId
+      - counterpartyId
+      - serviceId
+      - unitCode
+      - quantity
+      properties:
+        pricingDate:
+          type: string
+          format: date
+        legalEntityId:
+          type: string
+          format: uuid
+        branchId:
+          type: string
+          format: uuid
+        counterpartyId:
+          type: string
+          format: uuid
+        contractVersionId:
+          type: string
+          format: uuid
+        serviceId:
+          type: string
+          format: uuid
+        unitCode:
+          type: string
+        quantity:
+          type: string
+          description: Decimal encoded as string at API boundary.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+- bearerAuth: []
